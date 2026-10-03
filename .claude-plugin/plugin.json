@@ -1,0 +1,17 @@
+{
+  "name": "tidy-edits",
+  "version": "0.2.0",
+  "description": "Short cards for every file Claude edits instead of long line diffs, with each file's diff a click away",
+  "author": {
+    "name": "Mio"
+  },
+  "homepage": "https://github.com/milkoya/tidy-edits",
+  "repository": "https://github.com/milkoya/tidy-edits",
+  "license": "MIT",
+  "keywords": [
+    "diff",
+    "transcript",
+    "edit"
+  ],
+  "types": "./types/index.d.ts"
+}
