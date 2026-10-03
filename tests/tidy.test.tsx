@@ -88,7 +88,7 @@ describe('counting', () => {
 describe('the card', () => {
   test('draws one line per edited or written file instead of the original', async ($, on) => {
     drawsOriginal(on)
-    on('session.cwd', () => ({ value: '/repo' }))
+    on('session.root', () => ({ value: '/repo' }))
     for (const [tool, output, added, removed, verb, name] of [['Edit', EDIT, 2, 1, 'Updated', 'a.ts'], ['Write', CREATED, 3, 0, 'Created', 'new.ts']] as const) {
       const ui = await $.ui.mount(row(tool, output))
       expect(await ui.find({ type: 'Text', text: 'ORIGINAL' })).toBeUndefined()
@@ -103,7 +103,7 @@ describe('the card', () => {
 
   test('shows and hides the diff of an edit', async ($, on) => {
     drawsOriginal(on)
-    on('session.cwd', () => ({ value: '/repo' }))
+    on('session.root', () => ({ value: '/repo' }))
     const ui = await $.ui.mount(row('Edit', EDIT))
     expect(await ui.find({ type: 'Text', text: 'b2' })).toBeUndefined()
     await ui.press({ key: 'diff:/repo/a.ts' })
@@ -116,7 +116,8 @@ describe('the card', () => {
 
   test('draws a short preview of a bash output and one line per changed file instead of the original', async ($, on) => {
     drawsOriginal(on)
-    on('session.cwd', () => ({ value: '/repo' }))
+    on('session.root', () => ({ value: '/repo' }))
+    on('session.cwd', () => ({ value: '/repo/Assets' }))
     const ui = await $.ui.mount(row('Bash', BASH))
     expect(await ui.find({ type: 'Text', text: 'ORIGINAL' })).toBeUndefined()
     expect(await ui.find({ type: 'Text', text: 'l3' })).toBeDefined()
@@ -133,7 +134,7 @@ describe('the card', () => {
 
   test('shows and hides the diff of each changed file on its own', async ($, on) => {
     drawsOriginal(on)
-    on('session.cwd', () => ({ value: '/repo' }))
+    on('session.root', () => ({ value: '/repo' }))
     const ui = await $.ui.mount(row('Bash', BASH))
     await ui.press({ key: 'diff:/repo/Assets/A.cs' })
     expect(await ui.find({ type: 'Text', text: 'b2' })).toBeDefined()
@@ -148,7 +149,7 @@ describe('the card', () => {
 
   test('a deleted file shows what was removed', async ($, on) => {
     drawsOriginal(on)
-    on('session.cwd', () => ({ value: '/repo' }))
+    on('session.root', () => ({ value: '/repo' }))
     const gone = { ...BASH, bashEditDiff: { files: [{ filePath: '/repo/Old.cs', hunks: [{ oldStart: 1, newStart: 0, lines: ['-a', '-b'] }], deleted: true }], moreFiles: 0 } }
     const ui = await $.ui.mount(row('Bash', gone))
     expect(await ui.find({ type: 'Text', text: 'Deleted' })).toBeDefined()

@@ -115,7 +115,7 @@ export const register: Register = on => {
       if (!change || !filePath || staged === true) return next(e)
       const elements = $.ui.resolve(e)
       const rows = { id: e.props.tool_use_id, opened: await read($, open) }
-      const path = shortPath(filePath, await $.session.cwd())
+      const path = shortPath(filePath, await $.session.root())
       return card(elements, [fileLine(elements, $, rows, { ...change, verb: type === 'create' ? 'Created' : 'Updated', path, filePath })])
     })
   }
@@ -125,7 +125,7 @@ export const register: Register = on => {
     const output = e.props.output
     const changes = bashChangesOf(output)
     if (!changes) return next(e)
-    const cwd = await $.session.cwd()
+    const root = await $.session.root()
     const elements = $.ui.resolve(e)
     const rows = { id: e.props.tool_use_id, opened: await read($, open) }
     const { Text } = elements
@@ -141,7 +141,7 @@ export const register: Register = on => {
         fileLine(elements, $, rows, {
           ...file,
           verb: file.isCreated ? 'Created' : file.isDeleted ? 'Deleted' : 'Updated',
-          path: shortPath(file.filePath, cwd),
+          path: shortPath(file.filePath, root),
         }),
       ),
       changes.moreFiles > 0 ? <Text dimColor>and {counted(changes.moreFiles, 'more file')}</Text> : null,
