@@ -1,6 +1,6 @@
 {
   "name": "tidy-edits",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Short cards for every file Claude edits instead of long line diffs, with each file's diff a click away",
   "author": {
     "name": "Mio"
